@@ -5,9 +5,14 @@ import ChatInput from './ChatInput.vue';
 
 interface Message { sender: 'bot' | 'user'; text: string; }
 
-const messages = ref<Message[]>([
+const props = defineProps<{ initialMessages?: Message[] }>();
+const emit = defineEmits<{ (e: 'messages-change', messages: Message[]): void }>();
+
+const defaultWelcome: Message[] = [
   { sender: 'bot', text: 'Hello! How can I assist you today?' }
-]);
+];
+
+const messages = ref<Message[]>(props.initialMessages?.length ? [...props.initialMessages] : [...defaultWelcome]);
 
 // Refs
 const containerRef = ref<HTMLElement | null>(null);
@@ -32,14 +37,22 @@ function scrollToBottom() {
   });
 }
 
-// Auto-scroll when messages length changes (user sends or bot replies)
+// Reinitialize messages when initialMessages prop changes (e.g., switching conversations)
+watch(() => props.initialMessages, (val) => {
+  messages.value = val?.length ? [...val] : [...defaultWelcome];
+  emit('messages-change', [...messages.value]);
+});
+
+// Auto-scroll and emit when messages length changes (user sends or bot replies)
 watch(() => messages.value.length, () => {
   scrollToBottom();
+  emit('messages-change', [...messages.value]);
 });
 
 // Also scroll on initial mount
 onMounted(() => {
   scrollToBottom();
+  emit('messages-change', [...messages.value]);
 });
 
 async function sendMessage(newMsg: string) {
