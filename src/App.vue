@@ -1,5 +1,4 @@
-<script setup lang="ts">
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <p><strong>Current route path:</strong> {{ $route.fullPath }}</p>
@@ -11,9 +10,8 @@
       <RouterLink to="/bai-1">Go to Bai 1</RouterLink>
     </div>
     <div>
-      <RouterLink to="/"></RouterLink>
+      <RouterLink to="/bai-2">Go to Bai 2</RouterLink>
     </div>
-
   </nav>
   <main>
     <RouterView />

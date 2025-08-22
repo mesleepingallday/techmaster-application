@@ -11,7 +11,7 @@ const words = dialogData.word
 onMounted(() => {
   if (audioRef.value) {
     audioRef.value.addEventListener('timeupdate', () => {
-      currentTime.value = audioRef.value!.currentTime * 1000 // ms
+      currentTime.value = audioRef.value!.currentTime * 1000
     })
   }
 })
