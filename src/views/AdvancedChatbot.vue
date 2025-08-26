@@ -89,9 +89,9 @@ function handleMessagesChange(msgs: Message[]) {
 </script>
 
 <template>
-  <div class="flex h-screen">
-    <!-- Left pane -->
-    <aside class="w-64 border-r border-gray-200 bg-gray-50">
+  <div class="min-h-screen bg-slate-50 flex" style="font-family: Inter, 'Noto Sans', sans-serif;">
+    <!-- Sidebar fixed như ChatGPT -->
+    <aside class="fixed top-0 left-0 w-64 h-screen border-r border-gray-200 bg-white z-10">
       <ChatbotSidebar
         :conversations="conversations"
         :current-id="currentId"
@@ -102,14 +102,17 @@ function handleMessagesChange(msgs: Message[]) {
       />
     </aside>
 
-    <!-- Right pane -->
-    <main class="flex-1 flex flex-col items-center">
-      <ChatWindow
-        v-if="currentConv"
-        :key="currentConv.id"
-        :initial-messages="currentConv.messages"
-        @messages-change="handleMessagesChange"
-      />
+    <!-- Nội dung chat dịch sang phải (bằng chiều rộng sidebar) -->
+    <main class="ml-64 flex-1 flex flex-col items-center px-6 py-8">
+      <div class="w-full max-w-[960px]">
+        <ChatWindow
+          v-if="currentConv"
+          :key="currentConv.id"
+          :initial-messages="currentConv.messages"
+          @messages-change="handleMessagesChange"
+        />
+      </div>
     </main>
   </div>
 </template>
+
