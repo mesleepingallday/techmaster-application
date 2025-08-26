@@ -57,7 +57,7 @@ const rendered = computed(() => md.render(props.text ?? ''))
       />
       <div class="flex flex-col gap-1 items-start">
         <p class="text-[#49739c] text-[13px]">ChatBot</p>
-        <div class="bg-[#e7edf4] text-[#0d141c] rounded-lg px-4 py-3 max-w-[360px] message-content" v-html="rendered"></div>
+        <div class="bg-[#e7edf4] text-[#0d141c] rounded-lg px-4 py-3 max-w-full message-content" v-html="rendered"></div>
       </div>
     </template>
 

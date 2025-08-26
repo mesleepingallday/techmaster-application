@@ -1,10 +1,21 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
+
+const props = defineProps<{
+  showThink: boolean
+}>()
 
 const msg = ref('')
+
 const emit = defineEmits<{
   (e: 'send', message: string): void
+  (e: 'update:showThink', value: boolean): void
 }>()
+
+const localShowThink = computed({
+  get: () => props.showThink,
+  set: (v: boolean) => emit('update:showThink', v)
+})
 
 function handleSend() {
   if (!msg.value.trim()) return
@@ -25,6 +36,10 @@ function handleSend() {
         class="flex-1 h-12 rounded-md px-4 bg-[#f0f2f5] text-base focus:outline-none focus:ring-2 focus:ring-blue-500"
         @keyup.enter="handleSend"
       />
+      <label class="flex items-center gap-2 text-sm text-gray-700">
+        <input type="checkbox" v-model="localShowThink" />
+        Show Think
+      </label>
       <button
         class="h-12 px-5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-md"
         @click="handleSend"

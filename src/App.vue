@@ -16,6 +16,9 @@
     <div>
       <RouterLink to="/bai-3">Go to Bai 3</RouterLink>
     </div>
+    <div>
+      <RouterLink to="/bai-4">Go to Bai 4</RouterLink>
+    </div>
   </nav>
   <main>
     <RouterView />

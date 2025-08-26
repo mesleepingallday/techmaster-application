@@ -80,7 +80,6 @@ function handleMessagesChange(msgs: Message[]) {
   const conv = currentConv.value
   if (!conv) return
   conv.messages = [...msgs]
-  // Set a better title from first user message
   const firstUser = conv.messages.find(m => m.sender === 'user')?.text
   if (firstUser) {
     conv.title = firstUser.length > 30 ? firstUser.slice(0, 30) + '…' : firstUser

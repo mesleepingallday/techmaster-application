@@ -14,6 +14,8 @@ const defaultWelcome: Message[] = [
 
 const messages = ref<Message[]>(props.initialMessages?.length ? [...props.initialMessages] : [...defaultWelcome]);
 
+const showThink = ref<boolean>(false);
+
 const containerRef = ref<HTMLElement | null>(null);
 const bottomRef = ref<HTMLElement | null>(null);
 
@@ -32,6 +34,24 @@ function scrollToBottom() {
       } catch {}
     }
   });
+}
+
+function processThink(text: string): string {
+  if (!text) return '';
+  try {
+    const replaced = text.replace(/<think>([\s\S]*?)<\/think>/gi, (_m, inner) => {
+      if (showThink.value) {
+        const content = String(inner ?? '').trim();
+        if (!content) return '';
+        return `\n\n> 🧠 Think\n\n\`\`\`\n${content}\n\`\`\`\n\n`;
+      } else {
+        return '';
+      }
+    });
+    return replaced;
+  } catch {
+    return text;
+  }
 }
 
 watch(() => props.initialMessages, (val) => {
@@ -85,7 +105,9 @@ async function sendMessage(newMsg: string) {
 
 <template>
   <div class="flex flex-col max-w-[960px] flex-1">
-    <h2 class="text-[28px] font-bold text-center pt-5 pb-3">Chat with Our AI Assistant</h2>
+    <div class="flex items-center justify-center pt-5 pb-3 px-4">
+      <h2 class="text-[28px] font-bold text-center">Chat with Our AI Assistant</h2>
+    </div>
     <p class="text-center text-base pb-3">
       Our chatbot is designed to assist you with various tasks and answer your questions.
     </p>
@@ -99,12 +121,12 @@ async function sendMessage(newMsg: string) {
         v-for="(msg, i) in messages"
         :key="i"
         :sender="msg.sender"
-        :text="msg.text"
+        :text="processThink(msg.text)"
       />
     </div>
 
     <!-- Input -->
-    <ChatInput @send="sendMessage" />
+    <ChatInput v-model:showThink="showThink" @send="sendMessage" />
     <!-- Bottom sentinel to ensure page scrolls to the true end of the page -->
     <div ref="bottomRef"></div>
   </div>
